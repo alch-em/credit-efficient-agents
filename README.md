@@ -95,6 +95,23 @@ Handoff: changed files, behavior, results, risks.
 | [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) | Installation, updates, script policies, and conflicts |
 | [`docs/MEASURE_SAVINGS.md`](docs/MEASURE_SAVINGS.md) | How to evaluate usage fairly |
 
+## Optional: 50% context-compaction skills
+
+Two small, on-demand skills are included for Claude Code and Codex:
+
+- [Claude Code skill](.claude/skills/context-compaction-manager/SKILL.md)
+- [Codex skill](.agents/skills/context-compaction-manager/SKILL.md)
+
+These are **workflow skills**, not autonomous daemons. The underlying tools must implement compaction. To install both skills globally from an extracted checkout, first preview:
+
+```powershell
+.\Install-CompactionSkills.ps1 -DryRun -EnableClaude50
+```
+
+Then run `.\Install-CompactionSkills.ps1 -EnableClaude50` to install both skills and opt into Claude's 50% threshold. The installer **does not change Codex's config unless** you provide the verified context window for your actual Codex model, e.g. `-CodexContextWindow 200000` for a confirmed 200K model (which sets a 100K token threshold). Do not reuse Claude's 1M window for Codex without checking.
+
+Existing skill directories are preserved rather than overwritten. Codex config is backed up before changes. Restart affected agents after installing. For prerequisites, caveats, manual rollback, and measurement, read [Automatic context compaction](docs/AUTO_COMPACTION.md).
+
 ## Claude Code tips
 
 Use `/context` to identify context overhead, `/compact` for a continuing long task, and `/clear` when switching to an unrelated task. Avoid mechanically running these commands when not needed. Command support may vary by installed version.
